@@ -1,7 +1,7 @@
 package com.app.invoice.tenant.services.staff;
 
 import com.app.invoice.tenant.dto.StaffDto;
-import com.app.invoice.tenant.entity.nurse.Staff;
+import com.app.invoice.tenant.entity.staff.Staff;
 import com.app.invoice.tenant.repos.nurse.StaffRepository;
 import org.springframework.stereotype.Service;
 
