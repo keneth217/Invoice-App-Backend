@@ -1,9 +1,16 @@
 package com.app.invoice.master.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "roles")
 public class MasterRole implements Serializable {
@@ -15,25 +22,14 @@ public class MasterRole implements Serializable {
     @Column(length = 20, name = "RoleName")
     private MasterERole name;
 
-    public MasterRole() {
-    }
 
     public MasterRole(MasterERole name) {
         this.name = name;
     }
 
 
-
-    public Integer getId() {
-        return id;
-    }
-
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public MasterERole getName() {
-        return name;
     }
 
     public void setName(MasterERole name) {

@@ -1,6 +1,6 @@
 package com.app.invoice.tenant.entity;
 
-import com.app.invoice.enums.EntryType;
+import com.app.invoice.tenant.enums.EntryType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

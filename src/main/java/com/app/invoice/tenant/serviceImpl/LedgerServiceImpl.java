@@ -1,7 +1,6 @@
 package com.app.invoice.tenant.serviceImpl;
 
 
-import com.app.invoice.enums.EntryType;
 import com.app.invoice.tenant.dto.LedgerReport;
 import com.app.invoice.tenant.dto.LedgerSummary;
 import com.app.invoice.tenant.dto.LedgerTransactionResponse;
@@ -9,6 +8,7 @@ import com.app.invoice.tenant.entity.Invoice;
 import com.app.invoice.tenant.entity.LedgerEntry;
 import com.app.invoice.tenant.entity.PaymentVoucher;
 
+import com.app.invoice.tenant.enums.EntryType;
 import com.app.invoice.tenant.repos.LedgerRepository;
 import com.app.invoice.tenant.service.LedgerService;
 import org.springframework.stereotype.Service;

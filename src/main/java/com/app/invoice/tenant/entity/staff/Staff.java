@@ -1,4 +1,4 @@
-package com.app.invoice.tenant.entity.nurse;
+package com.app.invoice.tenant.entity.staff;
 
 import jakarta.persistence.*;
 import lombok.*;

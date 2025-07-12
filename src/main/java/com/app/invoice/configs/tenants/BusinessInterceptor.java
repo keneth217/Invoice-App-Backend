@@ -10,7 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.util.Enumeration;
 
 @Component
-public class SchoolInterceptor implements HandlerInterceptor {
+public class BusinessInterceptor implements HandlerInterceptor {
 
     private static final String[] EXCLUDED_ENDPOINTS = {
             "/error",

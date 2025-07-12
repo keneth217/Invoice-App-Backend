@@ -1,7 +1,7 @@
 package com.app.invoice.tenant.services.defaultSettings;
 
 
-import com.app.invoice.tenant.entity.school_settings.BusinessSettings;
+import com.app.invoice.tenant.entity.business_settings.BusinessSettings;
 import com.app.invoice.tenant.repos.business_settings.BusinessSettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
