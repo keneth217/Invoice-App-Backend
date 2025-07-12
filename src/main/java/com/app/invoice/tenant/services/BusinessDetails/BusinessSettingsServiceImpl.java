@@ -3,7 +3,7 @@ package com.app.invoice.tenant.services.BusinessDetails;
 import com.app.invoice.master.repos.BusinessRepository;
 import com.app.invoice.tenant.dto.school_settings.PharmacyNameDTO;
 import com.app.invoice.tenant.dto.school_settings.PharmacySettingsDTO;
-import com.app.invoice.tenant.entity.school_settings.BusinessSettings;
+import com.app.invoice.tenant.entity.business_settings.BusinessSettings;
 import com.app.invoice.tenant.repos.business_settings.BusinessSettingsRepository;
 import com.app.invoice.tenant.services.defaultSettings.DefaultSettingsService;
 import jakarta.annotation.PostConstruct;
