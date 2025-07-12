@@ -11,8 +11,9 @@ import com.app.invoice.tenant.entity.InvoiceItem;
 import com.app.invoice.tenant.mapper.InvoiceMapper;
 import com.app.invoice.tenant.repos.CustomerRepository;
 import com.app.invoice.tenant.repos.InvoiceRepository;
-import com.app.invoice.tenant.service.InvoiceService;
-import com.app.invoice.tenant.service.LedgerService;
+
+import com.app.invoice.tenant.services.InvoiceService;
+import com.app.invoice.tenant.services.LedgerService;
 import com.app.invoice.utils.InvoiceNumberGenerator;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Service;

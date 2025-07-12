@@ -1,4 +1,4 @@
-package com.app.invoice.tenant.service;
+package com.app.invoice.tenant.services;
 
 import com.app.invoice.tenant.dto.ReceiptResponse;
 

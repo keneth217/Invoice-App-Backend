@@ -8,7 +8,8 @@ import com.app.invoice.tenant.mapper.ReceiptMapper;
 
 import com.app.invoice.tenant.repos.PaymentVoucherRepository;
 import com.app.invoice.tenant.repos.ReceiptRepository;
-import com.app.invoice.tenant.service.ReceiptService;
+
+import com.app.invoice.tenant.services.ReceiptService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

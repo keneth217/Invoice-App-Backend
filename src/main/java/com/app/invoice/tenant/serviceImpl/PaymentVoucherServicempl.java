@@ -13,8 +13,10 @@ import com.app.invoice.tenant.mapper.PaymentVoucherMapper;
 import com.app.invoice.tenant.repos.InvoiceRepository;
 import com.app.invoice.tenant.repos.PaymentVoucherRepository;
 import com.app.invoice.tenant.repos.ReceiptRepository;
-import com.app.invoice.tenant.service.LedgerService;
-import com.app.invoice.tenant.service.PaymentVoucherService;
+
+
+import com.app.invoice.tenant.services.LedgerService;
+import com.app.invoice.tenant.services.PaymentVoucherService;
 import com.app.invoice.utils.ReceiptNumberGenerator;
 import com.app.invoice.utils.VoucherNumberGenerator;
 import jakarta.transaction.Transactional;

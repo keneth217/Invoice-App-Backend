@@ -11,7 +11,8 @@ import com.app.invoice.tenant.mapper.LedgerMapper;
 import com.app.invoice.tenant.mapper.PaymentVoucherMapper;
 import com.app.invoice.tenant.mapper.ReceiptMapper;
 import com.app.invoice.tenant.repos.*;
-import com.app.invoice.tenant.service.DashboardService;
+
+import com.app.invoice.tenant.services.DashboardService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

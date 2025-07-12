@@ -1,9 +1,10 @@
-package com.app.invoice.tenant.controller;
+package com.app.invoice.tenant.controllers;
 
 
 import com.app.invoice.tenant.dto.ReceiptResponse;
-import com.app.invoice.tenant.service.LedgerService;
-import com.app.invoice.tenant.service.ReceiptService;
+
+
+import com.app.invoice.tenant.services.ReceiptService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

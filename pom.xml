@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.app.invoice</groupId>
-	<artifactId>pharmacy</artifactId>
+	<artifactId>invoice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Invoice Application</name>
 	<description>Invoice  Management System</description>
@@ -54,10 +54,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- Temporarily commented out to resolve version conflicts
 		<dependency>
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-server</artifactId>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -118,12 +120,14 @@
 			<version>3.14.0</version>
 		</dependency>
 
-		<!-- Swagger/OpenAPI Documentation -->
+
+
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+
 
 	</dependencies>
 	<dependencyManagement>

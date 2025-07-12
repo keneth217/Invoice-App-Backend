@@ -10,7 +10,8 @@ import com.app.invoice.tenant.entity.PaymentVoucher;
 
 import com.app.invoice.tenant.enums.EntryType;
 import com.app.invoice.tenant.repos.LedgerRepository;
-import com.app.invoice.tenant.service.LedgerService;
+
+import com.app.invoice.tenant.services.LedgerService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

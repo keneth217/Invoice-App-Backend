@@ -7,7 +7,7 @@ import com.app.invoice.tenant.dto.CustomerResponse;
 import com.app.invoice.tenant.entity.Customer;
 import com.app.invoice.tenant.mapper.CustomerMapper;
 import com.app.invoice.tenant.repos.CustomerRepository;
-import com.app.invoice.tenant.service.CustomerService;
+import com.app.invoice.tenant.services.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
