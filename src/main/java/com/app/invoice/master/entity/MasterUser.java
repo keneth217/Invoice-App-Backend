@@ -28,7 +28,7 @@ public class MasterUser {
     private String tenantID = "master";
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Role", nullable = false)
-    private MasterRole role = new MasterRole(MasterERole.DEPUTY_ADMIN);
+    private MasterRole role = new MasterRole(MasterERole.SUPER_ADMIN);
     @Column(name = "AddedBy")
     private long addedBy;
     @Column(name = "Deleted")
