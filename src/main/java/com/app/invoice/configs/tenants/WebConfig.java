@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
-    private SchoolInterceptor schoolInterceptor;
+    private BusinessInterceptor schoolInterceptor;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
