@@ -57,7 +57,7 @@ public class TenantDatabaseService {
 
     @Async("taskExecutor")
     public CompletableFuture<String> createDatabase(Business business) {
-        String tenantId = String.valueOf(business.getId());
+        String tenantId = business.getBusinessCode(); // Use business code as tenant ID
         String businessName = business.getName();
         String businessEmail = business.getEmail();
         String businessCode = business.getBusinessCode();
@@ -65,10 +65,14 @@ public class TenantDatabaseService {
         String businessAddress = business.getAddress();
         try {
             statusService.updateStatus(tenantId, "Creating database...");
-            String sql = "CREATE DATABASE IF NOT EXISTS pharmacy_" + businessCode.toLowerCase();
+            String sql = "CREATE DATABASE IF NOT EXISTS invoice_" + businessCode.toLowerCase();
             centralJdbcTemplate.execute(sql);
 
             statusService.updateStatus(tenantId, "Setting up tenant data source...");
+            // Set the database URL for the business
+            String dbUrl = "jdbc:mysql://localhost:3306/invoice_" + businessCode.toLowerCase() + "?createDatabaseIfNotExist=true";
+            business.setDbUrl(dbUrl);
+            
             provider.createDataSourceForTenant(business);
             TenantContext.setCurrentTenant(tenantId);
 
@@ -90,7 +94,7 @@ public class TenantDatabaseService {
             Set<Role> roles = new HashSet<>();
             roles.add(principalRole);
             admin.setRoles(roles);
-            admin.setPharmacyId(String.valueOf(business.getId()));
+            admin.setPharmacyId(business.getBusinessCode());
             admin.setPharmacyName(business.getName());
             admin.setPassword(encoder.encode(business.getPhone()));
 
@@ -113,7 +117,7 @@ public class TenantDatabaseService {
             statusService.updateStatus(tenantId, "Sending email notification...");
             sendEmailNotificationToPrincipal(admin, business);
 
-            defaultSettingsService.applyDefaultSettings(tenantId, businessName, businessEmail, businessCode, businessPhoneNo, businessAddress);
+            defaultSettingsService.applyDefaultSettings(businessCode, businessName, businessEmail, businessCode, businessPhoneNo, businessAddress);
 
             TenantContext.clear();
             statusService.updateStatus(tenantId, "Completed");

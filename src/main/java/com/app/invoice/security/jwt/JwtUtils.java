@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${pharmacy.app.jwtSecret}")
+    @Value("${invoice.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${pharmacy.app.jwtExpirationMs}")
+    @Value("${invoice.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    @Value("${pharmacy.app.jwtRefreshExpirationMs}")
+    @Value("${invoice.app.jwtRefreshExpirationMs}")
     private int jwtRefreshExpirationMs;
 
     public String generateJwtToken(Authentication authentication) {

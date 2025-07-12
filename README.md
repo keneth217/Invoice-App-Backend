@@ -14,7 +14,7 @@ A comprehensive, multi-tenant Spring Boot application for managing invoices, cus
 
 ### Business Features
 - **Business Registration**: Self-service business onboarding
-- **Role-based Access Control**: Multiple user roles (Owner, Admin, Manager, Pharmacist, etc.)
+- **Role-based Access Control**: Multiple user roles (Owner, Admin, Manager, Accountant, etc.)
 - **Customizable Settings**: Business-specific configurations (invoice prefixes, currency, etc.)
 - **Financial Reporting**: Monthly statistics, ledger reports, and transaction history
 - **Payment Tracking**: Monitor invoice status (Paid, Partially Paid, Unpaid)
@@ -32,9 +32,10 @@ A comprehensive, multi-tenant Spring Boot application for managing invoices, cus
 ### Multi-Tenant Architecture
 The application uses a **database-per-tenant** approach:
 - **Central Database**: Stores business registration and master user data
-- **Tenant Databases**: Isolated databases for each business
-- **Dynamic DataSource Routing**: Automatic tenant context switching
-- **Tenant Context**: Thread-local storage for current tenant identification
+- **Tenant Databases**: Each business gets its own database named `invoice_{businessCode}` (e.g., `invoice_ABC123`)
+- **Dynamic DataSource Routing**: Automatic tenant context switching based on business code
+- **Tenant Context**: Thread-local storage for current tenant identification using business code
+- **Business Code**: Unique identifier used in X-TenantID header for API requests
 
 ### Technology Stack
 - **Java 17**: Latest LTS version
@@ -82,9 +83,10 @@ src/main/java/com/app/invoice/
 ### Database Setup
 1. **Create MySQL databases**:
 ```sql
-CREATE DATABASE pharmacy_db;
-CREATE DATABASE pharmacy_central_db;
-CREATE DATABASE pharmacy_tenant_db;
+CREATE DATABASE invoice_db;
+CREATE DATABASE invoice_central_db;
+-- Tenant databases will be created automatically as: invoice_{businessCode}
+-- Example: invoice_ABC123, invoice_XYZ789, etc.
 ```
 
 2. **Configure database connection** in `application.properties`:
@@ -119,7 +121,7 @@ The application will start on `http://localhost:8080`
 ### Default Superuser Account
 - **Username**: `superadmin`
 - **Password**: `SuperAdmin123!`
-- **Email**: `superadmin@pharmacy.com`
+- **Email**: `superadmin@invoice.com`
 
 ## 🔐 Authentication & Authorization
 
@@ -130,23 +132,50 @@ The application will start on `http://localhost:8080`
 
 ### User Roles
 - **OWNER**: Full system access, creates the business
-- **PHARMACY_ADMIN**: Administrative access
-- **MANAGER**: Staff and inventory management
-- **PHARMACIST**: Licensed medication dispensing
-- **PHARMACY_ASSISTANT**: Non-dispensing tasks
+- **BUSINESS_ADMIN**: Administrative access
+- **MANAGER**: Staff and operations management
+- **ACCOUNTANT**: Financial management and reporting
+- **ASSISTANT**: General business tasks
 - **CASHIER**: Payment handling
-- **INVENTORY_CLERK**: Inventory management
+- **CLERK**: Data entry and record keeping
 
 ### API Authentication
-Include the JWT token in the Authorization header:
+Include the JWT token and business code in the request headers:
 ```
 Authorization: Bearer <your-jwt-token>
-X-TenantID: <tenant-id>
+X-TenantID: <business-code>
 ```
 
-## 📡 API Endpoints
+**Note**: The `X-TenantID` header should contain the business code (e.g., `BUS-0001`) rather than the business UUID. This business code is used to route requests to the correct tenant database.
 
-### Master APIs (Business Registration)
+## 📡 API Documentation
+
+### Swagger UI
+The application includes comprehensive API documentation powered by Swagger/OpenAPI 3.0.
+
+**Access Swagger UI:**
+- **Development**: http://localhost:8080/swagger-ui.html
+- **API Docs**: http://localhost:8080/api-docs
+
+### Interactive Documentation Features
+- **Try it out**: Test APIs directly from the browser
+- **Sample Requests**: Pre-filled request bodies with example data
+- **Response Examples**: See expected response formats
+- **Authentication**: Configure JWT tokens and tenant IDs
+- **Schema Validation**: Automatic request/response validation
+
+### Public Endpoints (No Authentication Required)
+The following endpoints are accessible without authentication or tenant ID:
+- **Swagger UI**: `/swagger-ui.html`
+- **API Documentation**: `/api-docs`
+- **Health Check**: `/api/test/health`
+- **Connection Test**: `/api/test/connection`
+- **Echo Test**: `/api/test/echo`
+- **Authentication**: `/api/auth/**`
+
+### API Endpoints
+
+#### Master APIs (Business Registration)
 - `POST /api/v1/master/business/register` - Register new business
 - `GET /api/v1/master/business/activated` - Get activated businesses
 - `PUT /api/v1/master/business/{id}/activate` - Activate business
@@ -209,19 +238,20 @@ Key configuration options in `application.properties`:
 
 ```properties
 # Database Configuration
-spring.datasource.jdbc-url=jdbc:mysql://localhost/pharmacy_db
-spring.datasource.central.jdbc-url=jdbc:mysql://localhost/pharmacy_central_db
-spring.datasource.tenant.jdbc-url=jdbc:mysql://localhost/pharmacy_tenant_db
+spring.datasource.jdbc-url=jdbc:mysql://localhost/invoice_db
+spring.datasource.central.jdbc-url=jdbc:mysql://localhost/invoice_central_db
+# Tenant databases are created dynamically as: invoice_{businessCode}
+# Example: invoice_ABC123, invoice_XYZ789
 
 # JWT Configuration
-pharmacy.app.jwtSecret=your-secret-key
-pharmacy.app.jwtExpirationMs=86400000
-pharmacy.app.jwtRefreshExpirationMs=604800000
+invoice.app.jwtSecret=your-secret-key
+invoice.app.jwtExpirationMs=86400000
+invoice.app.jwtRefreshExpirationMs=604800000
 
 # Superuser Configuration
-pharmacy.superuser.username=superadmin
-pharmacy.superuser.password=SuperAdmin123!
-pharmacy.superuser.email=superadmin@pharmacy.com
+invoice.superuser.username=superadmin
+invoice.superuser.password=SuperAdmin123!
+invoice.superuser.email=superadmin@invoice.com
 
 # Multitenancy Configuration
 multitenancy.datasource.base-url=jdbc:mysql://localhost:3306/
@@ -244,13 +274,13 @@ mvn clean package -DskipTests
 
 2. **Run with production profile**:
 ```bash
-java -jar target/pharmacy-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+java -jar target/invoice-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
 ```
 
 ### Docker Deployment
 ```dockerfile
 FROM openjdk:17-jdk-slim
-COPY target/pharmacy-0.0.1-SNAPSHOT.jar app.jar
+COPY target/invoice-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 ```
@@ -263,18 +293,38 @@ mvn test
 ```
 
 ### API Testing
-Use tools like Postman or curl to test the APIs:
 
+#### Using Swagger UI (Recommended)
+1. Start the application: `mvn spring-boot:run`
+2. Open Swagger UI: http://localhost:8080/swagger-ui.html
+3. Test public endpoints first (no authentication required):
+   - `/api/test/health` - Health check
+   - `/api/test/connection` - Connection test
+   - `/api/test/echo` - Echo test
+4. For protected endpoints, configure authentication:
+   - Click "Authorize" button
+   - Enter JWT token: `Bearer <your-jwt-token>`
+   - Enter X-TenantID: `<business-code>`
+5. Test APIs directly from the browser
+
+#### Using curl
 ```bash
-# Login
+# Test public endpoints (no authentication required)
+curl -X GET http://localhost:8080/api/test/health
+curl -X GET http://localhost:8080/api/test/connection
+curl -X POST http://localhost:8080/api/test/echo \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Hello World"}'
+
+# Login (authentication required)
 curl -X POST http://localhost:8080/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"phoneNo":"superadmin","password":"SuperAdmin123!"}'
 
-# Create Invoice (with JWT token)
+# Create Invoice (authentication and tenant ID required)
 curl -X POST http://localhost:8080/api/v1/invoices \
   -H "Authorization: Bearer <jwt-token>" \
-  -H "X-TenantID: <tenant-id>" \
+  -H "X-TenantID: <business-code>" \
   -H "Content-Type: application/json" \
   -d '{"customer":{"id":1},"invoiceItems":[{"description":"Item 1","quantity":2,"unitPrice":100.00}]}'
 ```

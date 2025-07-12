@@ -50,12 +50,23 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                     DatabaseContext.setCurrentDatabase("master");
                 } else {
                     TenantContext.setCurrentTenant(tenantId);
-                    Business school = pharmacyService.findByBusinessId(UUID.fromString(tenantId));
-                    if (school == null) {
-                        throw new UsernameNotFoundException("School not found with ID: " + tenantId);
+                    // Try to find business by business code first, then by UUID
+                    Business business = pharmacyService.findByBusinessCode(tenantId);
+                    if (business == null) {
+                        try {
+                            business = pharmacyService.findByBusinessId(UUID.fromString(tenantId));
+                        } catch (IllegalArgumentException e) {
+                            // If tenantId is not a valid UUID, it should be a business code
+                            throw new UsernameNotFoundException("Business not found with code: " + tenantId);
+                        }
                     }
-                    if (Boolean.FALSE.equals(school.getActivated())) {
-                        throw new BusinessDeactivatedException("School is deactivated. Contact admin.");
+                    
+                    if (business == null) {
+                        throw new UsernameNotFoundException("Business not found with code: " + tenantId);
+                    }
+                    
+                    if (Boolean.FALSE.equals(business.getActivated())) {
+                        throw new BusinessDeactivatedException("Business is deactivated. Contact admin.");
                     }
                 }
             }

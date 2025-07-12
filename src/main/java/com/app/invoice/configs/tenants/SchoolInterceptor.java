@@ -15,8 +15,33 @@ public class SchoolInterceptor implements HandlerInterceptor {
     private static final String[] EXCLUDED_ENDPOINTS = {
             "/error",
             "/api/online/test-connection",
-            // Example of a public endpoint
-            // Add more endpoints as needed
+            
+            // Swagger UI and API Documentation
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/api-docs/**",
+            "/api-docs",
+            "/v3/api-docs/**",
+            "/v3/api-docs",
+            "/swagger-resources/**",
+            "/webjars/**",
+            
+            // Authentication endpoints
+            "/api/auth/**",
+            "/api/admin/auth/**",
+            
+            // Test and health check endpoints
+            "/api/test/**",
+            "/actuator/**",
+            "/health",
+            
+            // Legacy endpoints (keeping for compatibility)
+            "/api/students/active",
+            "/api/school/settings/name",
+            "/api/admin/users/forgot_password",
+            "/api/admin/users/reset_password",
+            "/api/users/forgot_password",
+            "/api/users/reset_password"
     };
 
     @Override

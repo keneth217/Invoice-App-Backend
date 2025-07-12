@@ -27,7 +27,7 @@ public class TenantDataSourceProvider {
         this.entityManagerFactoryBuilder = entityManagerFactoryBuilder;
         createDataSourceForTenant("public");
         for (BusinessResponse business : schoolService.getAllCompanies()) {
-            createDataSourceForTenant(String.valueOf(business.getId()));
+            createDataSourceForTenant(business.getBusinessCode());
         }
     }
 
@@ -52,10 +52,24 @@ public class TenantDataSourceProvider {
                     .password("jfm15.ml")
                     .build();
         } else {
-            Business pharmacy = schoolService.findByBusinessId(UUID.fromString(String.valueOf(tenantId)));
+            // Try to find business by business code first, then by UUID
+            Business business = schoolService.findByBusinessCode(tenantId);
+            if (business == null) {
+                try {
+                    business = schoolService.findByBusinessId(UUID.fromString(tenantId));
+                } catch (IllegalArgumentException e) {
+                    // If tenantId is not a valid UUID, it should be a business code
+                    throw new RuntimeException("Business not found with code: " + tenantId);
+                }
+            }
+            
+            if (business == null) {
+                throw new RuntimeException("Business not found with code: " + tenantId);
+            }
+            
             dataSource = DataSourceBuilder.create()
                     .type(HikariDataSource.class)
-                    .url(pharmacy.getDbUrl())
+                    .url(business.getDbUrl())
                     .driverClassName("com.mysql.cj.jdbc.Driver")
                     .username("Snowbit")
                     .password("jfm15.ml")

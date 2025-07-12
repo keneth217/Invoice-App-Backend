@@ -74,16 +74,39 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                         auth
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/").permitAll()
+                                
+                                // Swagger UI and API Documentation
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/swagger-ui.html").permitAll()
+                                .requestMatchers("/api-docs/**").permitAll()
+                                .requestMatchers("/api-docs").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/v3/api-docs").permitAll()
+                                .requestMatchers("/swagger-resources/**").permitAll()
+                                .requestMatchers("/webjars/**").permitAll()
+                                
+                                // Authentication endpoints
                                 .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/admin/auth/**").permitAll()
+                                
+                                // Test and health check endpoints
                                 .requestMatchers("/api/online/test-connection").permitAll()
+                                .requestMatchers("/api/test/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
+                                .requestMatchers("/health").permitAll()
+                                
+                                // Legacy endpoints (keeping for compatibility)
                                 .requestMatchers("/api/students/active").permitAll()
                                 .requestMatchers("/api/school/settings/name").permitAll()
-                                .requestMatchers("/api/admin/auth/**").permitAll()
                                 .requestMatchers("/api/admin/users/forgot_password").permitAll()
                                 .requestMatchers("/api/admin/users/reset_password").permitAll()
                                 .requestMatchers("/api/users/forgot_password").permitAll()
                                 .requestMatchers("/api/users/reset_password").permitAll()
+                                
+                                // Error pages
                                 .requestMatchers("/error").permitAll()
+                                
+                                // All other requests require authentication
                                 .anyRequest().authenticated()
                 );
 

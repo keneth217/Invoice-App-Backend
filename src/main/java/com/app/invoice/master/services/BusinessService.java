@@ -27,6 +27,8 @@ public interface BusinessService {
 
     Business findByBusinessId(UUID id);
 
+    Business findByBusinessCode(String businessCode);
+
 
     List<BusinessResponse> getActivatedBusinesses();
 

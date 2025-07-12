@@ -198,6 +198,12 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
+    public Business findByBusinessCode(String businessCode) {
+        return businessRepository.findByBusinessCode(businessCode)
+                .orElse(null);
+    }
+
+    @Override
     public List<BusinessResponse> getActivatedBusinesses() {
         return List.of();
     }
