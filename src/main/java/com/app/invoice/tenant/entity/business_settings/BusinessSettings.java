@@ -1,4 +1,4 @@
-package com.app.invoice.tenant.entity.school_settings;
+package com.app.invoice.tenant.entity.business_settings;
 
 import jakarta.persistence.*;
 import lombok.Getter;
